@@ -1,0 +1,6 @@
+com/ayaancodes/studentsystem/model/Student.class
+com/ayaancodes/studentsystem/service/StudentServiceImpl.class
+com/ayaancodes/studentsystem/repository/StudentRepository.class
+com/ayaancodes/studentsystem/service/StudentService.class
+com/ayaancodes/studentsystem/controller/StudentController.class
+com/ayaancodes/studentsystem/StudentsystemApplication.class
