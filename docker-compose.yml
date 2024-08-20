@@ -1,0 +1,59 @@
+version: '3.8'
+services:
+
+  #MySQL Database Service 
+  mysql: 
+    image: mysql:8.0
+    container_name: mysql
+    restart: always 
+    environment: 
+      MYSQL_ROOT_PASSWORD: p@ssw0rd
+      MYSQL_DATABASE: student_db
+      MYSQL_USER: student_user
+      MYSQL_PASSWORD: student_pwd
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks: 
+      - my-bridge-network
+
+  # Java Spring Boot Backend Service 
+  backend:
+    build: ./backend
+    container_name: backend 
+    restart: always   
+    #container_name: spring-boot-backend  
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/student_db
+      SPRING_DATASOURCE_USERNAME: student_user
+      SPRING_DATASOURCE_PASSWORD: student_pwd
+
+    networks:
+      - my-bridge-network
+
+  
+  # React Frontend Service 
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    restart: always 
+    #container_name: react-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend 
+    networks:
+      - my-bridge-network
+
+# mounting the network and volumes to each & every container created       
+networks:
+  my-bridge-network: 
+    driver: bridge 
+
+volumes:
+  mysql-data:
